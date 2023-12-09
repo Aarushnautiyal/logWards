@@ -5,7 +5,7 @@ const Coments = ({data}) => {
     <div>
       <span>{data.userName}</span>
       <div>{data.time}</div>
-      <p>{data.userComments}</p>
+      <p>{data.userComment}</p>
       <div>
         <div>Reply</div>
         <div>Edit</div>
