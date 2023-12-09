@@ -3,7 +3,7 @@ import delIcon from "../images/delIcon.svg"
 import { useState } from "react";
 import CommentCreationBox from "./CommentCreationBox";
 
-const Comments = ({data}) => {
+const Comments = ({data, parent,childIndex}) => {
   const {userName,time,userComment,replies} = data
   const timestampDate = new Date(time);
   const [commenting, setCommenting] = useState({
@@ -38,8 +38,8 @@ const formattedDate = timestampDate.toLocaleDateString('en-GB', options);
       </div>
       </div>
      {replies&& <div className={styles.repliesContainer}>
-      {(commenting.reply||commenting.editing)&&<CommentCreationBox Editing={commenting.editing} Replying={commenting.reply} userName={userName}/>}
-      {replies.map((ele,i)=><Comments key={i} data={ele}/>)}
+      {(commenting.reply||commenting.editing)&&<CommentCreationBox Editing={commenting.editing} indx={childIndex} Replying={commenting.reply} parent={parent} userName={userName}/>}
+      {replies.map((ele,i)=><Comments key={i} childIndex={i} data={ele} parent={parent}/>)}
     </div>}
     </>
   )

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styles from "./comment.module.scss";
 
-const CommentCreationBox = ({Editing, userName}) => {
+const CommentCreationBox = ({Editing, userName,Replying,indx,parent}) => {
   const [formData, setFormData] = useState({
     userName: "",
     userComment: "",
   });
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const normalInsert = ()=>{
     const formFilled = Object.values(formData).every((e) => e.length > 0);
     if (formFilled) {
       const date = new Date();
@@ -20,12 +19,24 @@ const CommentCreationBox = ({Editing, userName}) => {
         userName: "",
         userComment: "",
       });
-      localStorage.setItem("commentsData", JSON.stringify(obj));
+      const localData = JSON.parse(localStorage.getItem("commentsData"))||[];
+      localData.push(obj)
+      localStorage.setItem("commentsData", JSON.stringify(localData));
     }
+  }
+  const insertInside = ()=>{
+    if(Editing){
+
+    }
+    console.log("mailer",indx,parent)
+  }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if(Editing||Replying){insertInside()}else{normalInsert()}
   };
   const changeHandler = (e) => {
     const { value, name } = e.target;
-    const letters = /^[A-Za-z]+$/;
+    const letters = /^[a-zA-Z ]+$/;
     if (name === "userName" && !letters.test(value)) return;
 
     setFormData((prev) => ({
