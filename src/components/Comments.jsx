@@ -3,7 +3,7 @@ import delIcon from "../images/delIcon.svg"
 import { useState } from "react";
 import CommentCreationBox from "./CommentCreationBox";
 
-const Comments = ({data, parent,childIndex, setValueAdded,child}) => {
+const Comments = ({data, parent,childIndex, setData,child}) => {
   const {userName,time,userComment,replies} = data
   const [commenting, setCommenting] = useState({
     reply:false,
@@ -16,7 +16,7 @@ const delTheComment= ()=>{
   }else{
     localData.splice(parent,1)
   }
-  setValueAdded(prev=>!prev)
+  setData(localData)
   localStorage.setItem("commentsData", JSON.stringify(localData));
 }
 const timestampDate = new Date(time);
@@ -48,8 +48,8 @@ const formattedDate = timestampDate.toLocaleDateString('en-GB', options);
       </div>
       </div>
      {replies&& <div className={styles.repliesContainer}>
-      {(commenting.reply||commenting.editing)&&<CommentCreationBox Editing={commenting.editing} indx={childIndex} Replying={commenting.reply} parent={parent} propsUserName={userName} setValueAdded={setValueAdded} setCommenting={setCommenting}/>}
-      {replies.map((ele,i)=><Comments child={true}key={i} childIndex={i} data={ele} parent={parent} setValueAdded={setValueAdded}/>)}
+      {(commenting.reply||commenting.editing)&&<CommentCreationBox Editing={commenting.editing} indx={childIndex} Replying={commenting.reply} parent={parent} propsUserName={userName} setData={setData} setCommenting={setCommenting}/>}
+      {replies.map((ele,i)=><Comments child={true}key={i} childIndex={i} data={ele} parent={parent} setData={setData}/>)}
     </div>}
     </>
   )

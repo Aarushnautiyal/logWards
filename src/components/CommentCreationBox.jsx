@@ -7,7 +7,7 @@ const CommentCreationBox = ({
   Replying,
   indx,
   parent,
-  setValueAdded,
+  setData,
   setCommenting,
 }) => {
   const [formData, setFormData] = useState({
@@ -27,8 +27,8 @@ const CommentCreationBox = ({
         userName: "",
         userComment: "",
       });
-      setValueAdded((prev) => !prev);
       const localData = JSON.parse(localStorage.getItem("commentsData")) || [];
+      setData(localData)
       localData.push(obj);
       localStorage.setItem("commentsData", JSON.stringify(localData));
     }
@@ -55,7 +55,8 @@ const CommentCreationBox = ({
         } else {
           localData[parent].replies[indx] = obj;
         }
-        setValueAdded((prev) => !prev);
+      setData(localData)
+        
         localStorage.setItem("commentsData", JSON.stringify(localData));
       }
     } else {
@@ -76,7 +77,8 @@ const CommentCreationBox = ({
         indx !== undefined
           ? localData[parent].replies[indx].replies.push(obj)
           : localData[parent].replies.push(obj);
-        setValueAdded((prev) => !prev);
+          setData(localData)
+
         localStorage.setItem("commentsData", JSON.stringify(localData));
       }
      
