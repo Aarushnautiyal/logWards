@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import { changeHandler, submitHandler } from '../utility/utils'
 import styles from "./comment.module.scss"
 
 const CommentCreationBox = () => {
@@ -10,14 +9,18 @@ const CommentCreationBox = () => {
      const submitHandler =(e)=>{
         e.preventDefault();
         const formFilled = Object.values(formData).every(e=>e.length>0)
-        console.log("mailer",formFilled);
         if(formFilled){
             const date = new Date();
             const obj = {
                 ...formData,
-                time:date
+                time:date,
+                replies:[]
             }
-            console.log("mailer data",obj)
+            setFormData({
+                userName:"",
+                userComment:""
+            })
+            localStorage.setItem("commentsData",JSON.stringify(obj))
         }
     }
      const changeHandler = (e)=>{
