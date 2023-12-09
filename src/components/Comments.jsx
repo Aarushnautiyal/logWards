@@ -3,14 +3,24 @@ import delIcon from "../images/delIcon.svg"
 import { useState } from "react";
 import CommentCreationBox from "./CommentCreationBox";
 
-const Comments = ({data, parent,childIndex}) => {
+const Comments = ({data, parent,childIndex, setValueAdded}) => {
   const {userName,time,userComment,replies} = data
   const timestampDate = new Date(time);
   const [commenting, setCommenting] = useState({
     reply:false,
     editing:false
   });
-
+const delTheComment= ()=>{
+  console.log('mailer is -> parent',parent,"child index",childIndex)
+  const localData = JSON.parse(localStorage.getItem("commentsData"))||[];
+  if(!childIndex){
+    localData.splice(parent,1)
+  }else{
+    localData.splice(childIndex,1)
+  }
+  setValueAdded(prev=>!prev)
+  localStorage.setItem("commentsData", JSON.stringify(localData));
+}
 // Define options for formatting
 const options = { day: '2-digit', month: 'long', year: 'numeric' };
 
@@ -21,7 +31,7 @@ const formattedDate = timestampDate.toLocaleDateString('en-GB', options);
     <>
     <div className={styles.commentContainer}>
       <div className={styles.delImg}>
-        <img src={delIcon} alt="delete"  />
+        <img src={delIcon} alt="delete" onClick={delTheComment} />
       </div>
       <div className={styles.commentHeadline}>
       <div className={styles.userName}>{userName}</div>

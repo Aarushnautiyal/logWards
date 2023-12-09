@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./comment.module.scss";
 
-const CommentCreationBox = ({Editing, userName,Replying,indx,parent}) => {
+const CommentCreationBox = ({Editing, userName,Replying,indx,parent,setValueAdded}) => {
   const [formData, setFormData] = useState({
     userName: "",
     userComment: "",
@@ -19,6 +19,7 @@ const CommentCreationBox = ({Editing, userName,Replying,indx,parent}) => {
         userName: "",
         userComment: "",
       });
+      setValueAdded(prev=>!prev)
       const localData = JSON.parse(localStorage.getItem("commentsData"))||[];
       localData.push(obj)
       localStorage.setItem("commentsData", JSON.stringify(localData));
