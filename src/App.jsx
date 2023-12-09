@@ -1,16 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CommentCreationBox from "./components/CommentCreationBox";
 import Comments from "./components/Comments";
 
 const App = () => {
-  const [valueAdded, setValueAdded] = useState(true);
   const [sort, setSort] = useState(false);
   const localStorageData = JSON.parse(localStorage.getItem("commentsData"))||{}
   const [data,setData]=useState(localStorageData);
   useEffect(() => {
     let localdata={}
     if(!data)return
-    if (sort) {
+    if (!sort) {
        localdata= data.sort(function (a, b) {
         return new Date(b.time) - new Date(a.time);
       });
@@ -21,7 +20,6 @@ const App = () => {
       });
       setData(localdata)
     }
-    console.log("mailer data",data);
   }, [sort,data]);
   return (
     <div className="container">

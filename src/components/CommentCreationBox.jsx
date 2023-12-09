@@ -87,7 +87,6 @@ const CommentCreationBox = ({
         reply: false,
         editing: false,
       });
-    console.log("mailer", indx, parent);
   };
   const submitHandler = (e) => {
     e.preventDefault();
