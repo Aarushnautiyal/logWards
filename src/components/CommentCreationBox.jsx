@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import styles from "./comment.module.scss";
 
-const CommentCreationBox = ({Editing, userName,Replying,indx,parent,setValueAdded}) => {
+const CommentCreationBox = ({
+  Editing,
+  propsUserName,
+  Replying,
+  indx,
+  parent,
+  setValueAdded,
+  setCommenting,
+}) => {
   const [formData, setFormData] = useState({
-    userName: "",
+    userName: Editing?propsUserName:"",
     userComment: "",
   });
-  const normalInsert = ()=>{
+  const normalInsert = () => {
     const formFilled = Object.values(formData).every((e) => e.length > 0);
     if (formFilled) {
       const date = new Date();
@@ -19,21 +27,73 @@ const CommentCreationBox = ({Editing, userName,Replying,indx,parent,setValueAdde
         userName: "",
         userComment: "",
       });
-      setValueAdded(prev=>!prev)
-      const localData = JSON.parse(localStorage.getItem("commentsData"))||[];
-      localData.push(obj)
+      setValueAdded((prev) => !prev);
+      const localData = JSON.parse(localStorage.getItem("commentsData")) || [];
+      localData.push(obj);
       localStorage.setItem("commentsData", JSON.stringify(localData));
     }
-  }
-  const insertInside = ()=>{
-    if(Editing){
-
+  };
+  const insertInside = () => {
+    if (Editing) {
+      const formFilled = Object.values(formData).every((e) => e.length > 0);
+      if (formFilled) {
+        const date = new Date();
+        const obj = {
+          ...formData,
+          time: date,
+          replies: [],
+        };
+        setFormData({
+          userName: "",
+          userComment: "",
+        });
+        const localData =
+          JSON.parse(localStorage.getItem("commentsData")) || [];
+        if (indx === undefined) {
+            obj.replies =  localData[parent].replies;
+          localData[parent] = obj;
+        } else {
+          localData[parent].replies[indx] = obj;
+        }
+        setValueAdded((prev) => !prev);
+        localStorage.setItem("commentsData", JSON.stringify(localData));
+      }
+    } else {
+      const formFilled = Object.values(formData).every((e) => e.length > 0);
+      if (formFilled) {
+        const date = new Date();
+        const obj = {
+          ...formData,
+          time: date,
+          replies: [],
+        };
+        setFormData({
+          userName: "",
+          userComment: "",
+        });
+        const localData =
+          JSON.parse(localStorage.getItem("commentsData")) || [];
+        indx !== undefined
+          ? localData[parent].replies[indx].replies.push(obj)
+          : localData[parent].replies.push(obj);
+        setValueAdded((prev) => !prev);
+        localStorage.setItem("commentsData", JSON.stringify(localData));
+      }
+     
     }
-    console.log("mailer",indx,parent)
-  }
+    setCommenting({
+        reply: false,
+        editing: false,
+      });
+    console.log("mailer", indx, parent);
+  };
   const submitHandler = (e) => {
     e.preventDefault();
-    if(Editing||Replying){insertInside()}else{normalInsert()}
+    if (Editing || Replying) {
+      insertInside();
+    } else {
+      normalInsert();
+    }
   };
   const changeHandler = (e) => {
     const { value, name } = e.target;
@@ -54,7 +114,7 @@ const CommentCreationBox = ({Editing, userName,Replying,indx,parent,setValueAdde
           name="userName"
           placeholder="Name"
           onChange={(e) => changeHandler(e, setFormData)}
-          value={Editing?userName:formData.userName}
+          value={formData.userName}
           disabled={Editing}
         />
         <textarea
