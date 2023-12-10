@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CommentCreationBox from "./components/CommentCreationBox";
 import Comments from "./components/Comments";
+import styles from "./components/comment.module.scss"
 
 const App = () => {
   const [sort, setSort] = useState(false);
@@ -24,7 +25,11 @@ const App = () => {
   return (
     <div className="container">
       <CommentCreationBox setData={setData} />
-      <div onClick={() => setSort((prev) => !prev)}>sort</div>
+      <br />
+      {sort?
+      <div className={styles.sortByClass} onClick={() => setSort((prev) => !prev)}>Sort By: Date and Time &uarr;</div>:
+      <div className={styles.sortByClass} onClick={() => setSort((prev) => !prev)}>Sort By: Date and Time &darr;</div>}
+      <br />
       {data &&
         data.map((ele, i) => (
           <Comments
